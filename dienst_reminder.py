@@ -2,7 +2,7 @@ import datetime
 import requests
 import os
 
-def build_message():
+def build_message(date):
     dienste = [
         "Küche & Altglas",
         "Bad",
@@ -19,12 +19,9 @@ def build_message():
         "Paddy"
     ]
 
-    start_monat = datetime.date(2026, 4, 1)  # Start der Rotation
-    heute = datetime.date.today()
+    start_monat = datetime.date(2026, 4, 1)
 
-    # Monate seit Start berechnen
-    monate = (heute.year - start_monat.year) * 12 + (heute.month - start_monat.month)
-
+    monate = (date.year - start_monat.year) * 12 + (date.month - start_monat.month)
     rotation = monate % len(personen)
 
     verteilung = {}
@@ -33,7 +30,10 @@ def build_message():
         person = personen[(i + rotation) % len(personen)]
         verteilung[dienst] = person
 
-    text = "Dienstplan diesen Monat:\n\n"
+    if date.day == 1:
+        text = "Neuer Monatsdienstplan:\n\n"
+    else:
+        text = "Freitags‑Reminder:\n\n"
 
     for dienst, person in verteilung.items():
         text += f"{dienst} - {person}\n"
@@ -41,11 +41,9 @@ def build_message():
     return text
 
 
-
-
-def send_telegram(message,TOKEN,CHAT_ID):
+def send_telegram(message, TOKEN, CHAT_ID):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    
+
     data = {
         "chat_id": CHAT_ID,
         "text": message
@@ -53,8 +51,13 @@ def send_telegram(message,TOKEN,CHAT_ID):
 
     requests.post(url, data=data)
 
+
 if __name__ == "__main__":
     TOKEN = os.environ["TOKEN"]
     CHAT_ID = os.environ["CHAT_ID"]
-    message = build_message()
-    send_telegram(message, TOKEN, CHAT_ID)
+
+    today = datetime.date.today()
+
+    if today.day == 1 or today.weekday() == 4:
+        message = build_message(today)
+        send_telegram(message, TOKEN, CHAT_ID)
