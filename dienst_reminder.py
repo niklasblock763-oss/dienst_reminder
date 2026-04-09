@@ -19,7 +19,7 @@ def build_message():
         "Paddy"
     ]
 
-    start_monat = datetime.date(2026, 1, 1)  # Start der Rotation
+    start_monat = datetime.date(2026, 4, 1)  # Start der Rotation
     heute = datetime.date.today()
 
     # Monate seit Start berechnen
