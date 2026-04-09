@@ -1,6 +1,6 @@
 import datetime
-import datetime
 import requests
+import os
 
 def build_message():
     dienste = [
@@ -54,7 +54,7 @@ def send_telegram(message,TOKEN,CHAT_ID):
     requests.post(url, data=data)
 
 if __name__ == "__main__":
-    TOKEN = "..."
-    CHAT_ID = "..."
+    TOKEN = os.environ["TOKEN"]
+    CHAT_ID = os.environ["CHAT_ID"]
     message = build_message()
     send_telegram(message, TOKEN, CHAT_ID)
