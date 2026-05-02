@@ -59,6 +59,6 @@ if __name__ == "__main__":
 
     today = datetime.date.today()
 
-    #if today.day == 1 or today.weekday() == 4:
-    message = build_message(today)
-    send_telegram(message, TOKEN, CHAT_ID)
+    if today.day == 1 or today.weekday() == 4:
+        message = build_message(today)
+        send_telegram(message, TOKEN, CHAT_ID)
