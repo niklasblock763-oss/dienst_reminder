@@ -19,15 +19,16 @@ def build_message(date):
         "Paddy"
     ]
 
+
     start_monat = datetime.date(2026, 4, 1)
 
     monate = (date.year - start_monat.year) * 12 + (date.month - start_monat.month)
-    rotation = monate % len(personen)
+    rotation = monate % len(personen) # 0
 
     verteilung = {}
 
-    for i, dienst in enumerate(dienste):
-        person = personen[(i + rotation) % len(personen)]
+    for i, person in enumerate(personen):
+        dienst = dienste[(i + rotation) % len(dienste)]
         verteilung[dienst] = person
 
     if date.day == 1:
