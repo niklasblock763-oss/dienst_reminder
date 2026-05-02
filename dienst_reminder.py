@@ -27,8 +27,8 @@ def build_message(date):
 
     verteilung = {}
 
-    for i, person in enumerate(personen):
-        dienst = dienste[(i + rotation) % len(dienste)]
+    for i, dienst in enumerate(dienste): 
+        person = personen[(i - rotation) % len(personen)] 
         verteilung[dienst] = person
 
     if date.day == 1:
